@@ -1,0 +1,46 @@
+{
+  "users": [
+    {
+      "username": "AdmCordII",
+      "password": "II.CordinacionUAEH#"
+    },
+    {
+      "username": "AdmCordIM",
+      "password": "IM.CordinacionUAEH#"
+    },
+    {
+      "username": "AdmCordC",
+      "password": "CA.CordinacionUAEH#"
+    },
+    {
+      "username": "AdmGralSec",
+      "password": ".CordinacionUAEH#"
+    },
+    {
+      "username": "ss",
+      "password": "ss"
+    }
+  ],
+  "restore": [
+    {
+      "username": "AdmCordII",
+      "password": "E5-Jl@8nQ_2c%xoG7"
+    },
+    {
+      "username": "AdmCordIM",
+      "password": "k-Dp9#f_XrA7@-LjM1"
+    },
+    {
+      "username": "AdmCordC",
+      "password": "t1-Y2v$_qPzK3&mHxN"
+    },
+    {
+      "username": "AdmGralSec",
+      "password": "k0-Dp9%8nQ2%cm_HxN"
+    },
+  {
+    "username": "ss",
+    "password": "ss"
+  }
+  ]
+}

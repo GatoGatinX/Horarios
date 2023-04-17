@@ -1,91 +1,72 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+'use client'
+import "../app/styles/login.css"
+import jwt from 'jsonwebtoken'
+import Cookie from "js-cookie";
+import { useState } from "react";
+import userData from "../app/data/Users.json";
 
-const inter = Inter({ subsets: ['latin'] })
+function page() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
-export default function Home() {
+  const handleLogin = (e) => {
+    //Agregar cookie
+    //posible fuente:   https://www.perplexity.ai/search/008beeb4-3a33-4eee-9e39-fed1c7e2cc0d?s=u
+    e.preventDefault();
+    const user = userData.users.find(
+      (u) => u.username === username && u.password === password
+    );
+    if (user) {
+      console.log("Inicio de sesión exitoso");
+      const userJson = JSON.stringify(user.username);
+      console.log(userJson)
+      const userObj = JSON.parse(userJson);
+      console.log(userObj)
+      const token = jwt.sign({ userObj }, 'secreto');
+      Cookie.set('token', token, { expires: 1 });
+      const tokenFromCookie = Cookie.get('token');
+      try {
+        const decoded = jwt.verify(tokenFromCookie, 'secreto');
+        console.log(decoded);
+      } catch (err) {
+        console.error(err);
+      }
+      window.alert("A ver ")
+      window.location.replace("/edit/1");
+    } else {
+      window.alert("Error: Usuario o contraseña invalidos");
+    }
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="login-html">
+      <form onSubmit={handleLogin}>
+        <input id="tab-1" type="radio" name="tab" className="sign-in" defaultChecked />
+        <label htmlFor="tab-1" className="tab">Iniciar sesión</label>
+        <label className="sign-up" />
+        <label className="tab"></label>
+        <div className="login-form">
+          <div className="sign-in-htm">
+            <div className="group">
+              <label htmlFor="user" className="label">Usuario</label>
+              <input required id="user" type="text" className="input" value={username} onChange={(e) => setUsername(e.target.value)} />
+            </div>
+            <div className="group">
+              <label htmlFor="pass" className="label">Contraseña</label>
+              <input required id="pass" type="password" className="input" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </div>
+            <div className="group">
+              <button type="submit" className="button">Ingresar</button>
+            </div>
+            <div className="hr"></div>
+            <div className="foot-lnk">
+              <a href="../forgot">¿Olvidaste la contraseña?</a>
+            </div>
+          </div>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      </form>
+    </div>
+  );
 }
+
+export default page
